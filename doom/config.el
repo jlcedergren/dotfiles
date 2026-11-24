@@ -121,6 +121,8 @@
         :localleader
         :desc "Start SuperCollider" "s" #'sclang-start))
 
+(setenv "XDG_CONFIG_HOME" nil)
+
 
 ;;; Tidal
 
