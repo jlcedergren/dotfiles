@@ -172,4 +172,13 @@ in
       run install -m 644 ${./librewolf/chrome/userChrome.css} "$dir/userChrome.css"
       run install -m 644 ${./librewolf/chrome/userContent.css} "$dir/userContent.css"
     '');
+
+  home.file = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin (
+    let sc = "Library/Application Support/SuperCollider";
+    in {
+      "${sc}/startup.scd".source = link "supercollider/startup.scd";
+      "${sc}/startup.normal.scd".source = link "supercollider/startup.normal.scd";
+      "${sc}/startup.tidal.scd".source = link "supercollider/startup.tidal.scd";
+    }
+  );
 }
