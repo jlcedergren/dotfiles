@@ -125,6 +125,10 @@ in
 
   };
 
+  programs.zsh.shellAliases = {
+    nup = "cd ~/nix-config && nix flake update && sudo darwin-rebuild switch --flake . && home-manager switch --flake .";
+  };
+
   programs.fastfetch = {
     enable = true;
     settings = {

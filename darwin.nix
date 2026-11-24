@@ -49,4 +49,9 @@
   nix.optimise.automatic = true;
 
   homebrew.onActivation.cleanup = "uninstall";
+
+  homebrew.onActivation = {
+    autoUpdate = true;
+    upgrade = true;
+  };
 }
