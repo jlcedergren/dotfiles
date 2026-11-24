@@ -108,7 +108,7 @@ in
         touch .projectile
         git init
       }
-    '' + lib.optionalString pkgs.stdenv.isDarwin ''
+    '' + lib.optionalString pkgs.stdenv.hostPlatform.isDarwin ''
       path=(/Applications/SuperCollider.app/Contents/MacOS(N/) $path)
       export MAXSDK="$HOME/max-sdk-base/c74support"
       export DOTNET_ROOT="/usr/local/share/dotnet"
@@ -164,4 +164,11 @@ in
     "sketchybar".source = link "sketchybar";
   };
 
+  home.activation.librewolfChrome = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin
+    (lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      dir="$HOME/Library/Application Support/librewolf/Profiles/me7og5ja.default-default/chrome"
+      run mkdir -p "$dir"
+      run install -m 644 ${./librewolf/chrome/userChrome.css} "$dir/userChrome.css"
+      run install -m 644 ${./librewolf/chrome/userContent.css} "$dir/userContent.css"
+    '');
 }
