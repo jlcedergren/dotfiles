@@ -162,6 +162,7 @@ in
     "kitty".source = link "kitty";
     "aerospace".source = link "aerospace";
     "sketchybar".source = link "sketchybar";
+    "karabiner".source = link "karabiner";
   };
 
   home.activation.librewolfChrome = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin

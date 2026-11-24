@@ -37,7 +37,7 @@
       "dotnet-sdk@10" "emacs-app" "font-cascadia-code-nf" "godot-mono"
       "inkscape" "krita" "librewolf" "mullvad-vpn" "notunes" "plugdata"
       "raspberry-pi-imager" "scribus" "signal" "sikarugir" "transmission"
-      "ungoogled-chromium" "utm" "vlc" "kitty"
+      "ungoogled-chromium" "utm" "vlc" "kitty" "karabiner-elements"
     ];
   };
 
