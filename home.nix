@@ -126,7 +126,7 @@ in
   };
 
   programs.zsh.shellAliases = {
-    nup = "cd ~/nix-config && nix flake update && sudo darwin-rebuild switch --flake . && home-manager switch --flake .";
+    nup = "cd ~/nix-config && nix flake update && sudo darwin-rebuild switch --flake . && home-manager switch --flake . && doom upgrade";
   };
 
   programs.fastfetch = {
