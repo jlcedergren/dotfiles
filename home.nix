@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 let
   link = name: config.lib.file.mkOutOfStoreSymlink
@@ -96,7 +96,23 @@ in
         bindkey -M vicmd 'y' vi-yank-clipboard
       fi
 
-      [[ $OSTYPE == darwin* && -f ~/.zshrc.darwin ]] && source ~/.zshrc.darwin
+
+      path+=(~/.dotnet/tools(N/))
+
+      csnew() {
+        mkdir -p "$1" && cd "$1" || return
+        dotnet new sln -n "$1" --format sln
+        dotnet new console -n "$1" --use-program-main
+        dotnet sln add "$1/$1.csproj"
+        dotnet new gitignore
+        touch .projectile
+        git init
+      }
+    '' + lib.optionalString pkgs.stdenv.isDarwin ''
+      path=(/Applications/SuperCollider.app/Contents/MacOS(N/) $path)
+      export MAXSDK="$HOME/max-sdk-base/c74support"
+      export DOTNET_ROOT="/usr/local/share/dotnet"
+    '' + ''
       [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
     '';
 
