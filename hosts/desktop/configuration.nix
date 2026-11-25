@@ -64,6 +64,12 @@
     '';
   };
 
+  programs.steam = {
+    enable = true;
+    extraCompatPackages = [ pkgs.proton-ge-bin ];
+  };
+  programs.gamemode.enable = true;
+
   services.openssh.settings.PasswordAuthentication = false;
 
   environment.systemPackages = with pkgs; [
