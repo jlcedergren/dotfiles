@@ -1,10 +1,15 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
+(defvar my/main-machine-p (featurep :system 'macos))
+
 ;;; UI
 
 (setq doom-theme 'doom-opera
-      display-line-numbers-type t
-      fancy-splash-image "/Users/jillced/.config/emacs/emacs.svg")
+      display-line-numbers-type t)
+
+(let ((splash (expand-file-name "emacs.svg" doom-user-dir)))
+  (when (file-exists-p splash)
+    (setq fancy-splash-image splash)))
 
 (set-frame-parameter (selected-frame) 'alpha '(90 . 90))
 (add-to-list 'default-frame-alist '(alpha . (90 . 90)))
@@ -14,7 +19,8 @@
 
 (add-to-list 'load-path (expand-file-name "lisp" doom-user-dir))
 
-(setq browse-url-browser-function 'browse-url-default-macosx-browser)
+(when (featurep :system 'macos)
+  (setq browse-url-browser-function 'browse-url-default-macosx-browser))
 
 (map! :n "ä" #'evil-end-of-line)
 
@@ -47,21 +53,23 @@
 (after! evil-org
   (evil-set-initial-state 'org-agenda-mode 'normal))
 
-(defun my-timeedit-sync ()
-  (interactive)
-  (let ((org-dir (expand-file-name "~/org/")))
-    (call-process
-     (expand-file-name ".venv/bin/python" org-dir)
-     nil
-     "*timeedit-sync*"
-     nil
-     (expand-file-name "timeedit-sync.py" org-dir))
-    (message "TimeEdit calendar updated")))
+(when my/main-machine-p
+  (defun my-timeedit-sync ()
+    (interactive)
+    (let ((org-dir (expand-file-name "~/org/")))
+      (call-process
+       (expand-file-name ".venv/bin/python" org-dir)
+       nil
+       "*timeedit-sync*"
+       nil
+       (expand-file-name "timeedit-sync.py" org-dir))
+      (message "TimeEdit calendar updated"))))
 
 
 ;;; Programming
 
-(setenv "DOTNET_ROOT" "/usr/local/share/dotnet")
+(when (featurep :system 'macos)
+  (setenv "DOTNET_ROOT" "/usr/local/share/dotnet"))
 
 (after! eglot
   (setq eglot-events-buffer-config '(:size 2000000 :format full)
@@ -72,90 +80,93 @@
   (add-hook 'c++-mode-hook #'lsp!))
 
 
-;;; Email
+;; Main machine only: email, SuperCollider and Tidal
+(when my/main-machine-p
 
-(add-to-list 'load-path "/opt/homebrew/opt/mu/share/emacs/site-lisp/mu/mu4e")
+  ;;; Email
 
-(after! mu4e
-  (setq mu4e-update-interval 300)
-  (add-hook 'mu4e-main-mode-hook #'mu4e-update-mail-and-index)
+  (add-to-list 'load-path "/opt/homebrew/opt/mu/share/emacs/site-lisp/mu/mu4e")
 
-  (set-email-account!
-   "jill.cedergren@proton.me"
-   '((user-full-name     . "Jill Cedergren")
-     (user-mail-address  . "jill.cedergren@proton.me")
-     (smtpmail-smtp-user . "jill.cedergren@proton.me")
-     (smtpmail-smtp-server  . "127.0.0.1")
-     (smtpmail-smtp-service . 1025))
-   t)
+  (after! mu4e
+    (setq mu4e-update-interval 300)
+    (add-hook 'mu4e-main-mode-hook #'mu4e-update-mail-and-index)
 
-  (set-email-account!
-   "jill@jillcedgren.com"
-   '((user-full-name     . "Jill Cedergren")
-     (user-mail-address  . "jill@jillcedergren.com")
-     (smtpmail-smtp-user . "jill.cedergren@proton.me")
-     (smtpmail-smtp-server  . "127.0.0.1")
-     (smtpmail-smtp-service . 1025))))
+    (set-email-account!
+     "jill.cedergren@proton.me"
+     '((user-full-name     . "Jill Cedergren")
+       (user-mail-address  . "jill.cedergren@proton.me")
+       (smtpmail-smtp-user . "jill.cedergren@proton.me")
+       (smtpmail-smtp-server  . "127.0.0.1")
+       (smtpmail-smtp-service . 1025))
+     t)
 
-
-;;; SuperCollider
-
-(setq exec-path (append exec-path
-                        '("/Applications/SuperCollider.app/Contents/MacOS/")))
-
-(add-to-list 'load-path
-             "/Users/jillced/Library/Application Support/SuperCollider/downloaded-quarks/scel/el")
-
-(require 'sclang)
-
-(setq sclang-command "/Applications/SuperCollider.app/Contents/MacOS/sclang")
-
-(after! sclang
-  (advice-add 'switch-to-buffer :around
-              (lambda (orig buffer-or-name &rest args)
-                (unless (equal (buffer-name (get-buffer buffer-or-name))
-                               "*SCLang:Workspace*")
-                  (apply orig buffer-or-name args))))
-
-  (map! :map sclang-mode-map
-        :localleader
-        :desc "Start SuperCollider" "s" #'sclang-start))
-
-(setenv "XDG_CONFIG_HOME" nil)
+    (set-email-account!
+     "jill@jillcedgren.com"
+     '((user-full-name     . "Jill Cedergren")
+       (user-mail-address  . "jill@jillcedergren.com")
+       (smtpmail-smtp-user . "jill.cedergren@proton.me")
+       (smtpmail-smtp-server  . "127.0.0.1")
+       (smtpmail-smtp-service . 1025))))
 
 
-;;; Tidal
+  ;;; SuperCollider
 
-(setq tidal-interpreter "/Users/jillced/.ghcup/bin/ghci"
-      tidal-boot-script-path
-      "/Users/jillced/.local/state/cabal/store/ghc-9.10.3-fe9c/tdl-1.10.3-ba4efd96/share/BootTidal.hs")
+  (setq exec-path (append exec-path
+                          '("/Applications/SuperCollider.app/Contents/MacOS/")))
 
-(require 'haskell-mode)
-(require 'tidal)
+  (add-to-list 'load-path
+               "/Users/jillced/Library/Application Support/SuperCollider/downloaded-quarks/scel/el")
 
-(defvar my/sc-support-dir
-  (expand-file-name "~/Library/Application Support/SuperCollider/"))
+  (require 'sclang)
 
-(defvar my/sc-use-tidal-flag
-  (expand-file-name "use-tidal" my/sc-support-dir))
+  (setq sclang-command "/Applications/SuperCollider.app/Contents/MacOS/sclang")
 
-(defun my/start-tidal-environment ()
-  "Launch SuperCollider with the Tidal startup file, then start Tidal."
-  (interactive)
-  (write-region "" nil my/sc-use-tidal-flag nil 'silent)
-  (start-process "SuperCollider" nil "open" "-a" "SuperCollider")
-  (run-at-time
-   "5 sec" nil
-   (lambda ()
-     (when (file-exists-p my/sc-use-tidal-flag)
-       (delete-file my/sc-use-tidal-flag))))
-  (run-at-time "6 sec" nil #'tidal-start-haskell))
+  (after! sclang
+    (advice-add 'switch-to-buffer :around
+                (lambda (orig buffer-or-name &rest args)
+                  (unless (equal (buffer-name (get-buffer buffer-or-name))
+                                 "*SCLang:Workspace*")
+                    (apply orig buffer-or-name args))))
 
-(after! tidal
-  (map! :map tidal-mode-map
-        :n "C-<return>" #'tidal-run-multiple-lines
-        (:localleader
-         :desc "Start Tidal environment" "s" #'my/start-tidal-environment)))
+    (map! :map sclang-mode-map
+          :localleader
+          :desc "Start SuperCollider" "s" #'sclang-start))
+
+  (setenv "XDG_CONFIG_HOME" nil)
+
+
+  ;;; Tidal
+
+  (setq tidal-interpreter "/Users/jillced/.ghcup/bin/ghci"
+        tidal-boot-script-path
+        "/Users/jillced/.local/state/cabal/store/ghc-9.10.3-fe9c/tdl-1.10.3-ba4efd96/share/BootTidal.hs")
+
+  (require 'haskell-mode)
+  (require 'tidal)
+
+  (defvar my/sc-support-dir
+    (expand-file-name "~/Library/Application Support/SuperCollider/"))
+
+  (defvar my/sc-use-tidal-flag
+    (expand-file-name "use-tidal" my/sc-support-dir))
+
+  (defun my/start-tidal-environment ()
+    "Launch SuperCollider with the Tidal startup file, then start Tidal."
+    (interactive)
+    (write-region "" nil my/sc-use-tidal-flag nil 'silent)
+    (start-process "SuperCollider" nil "open" "-a" "SuperCollider")
+    (run-at-time
+     "5 sec" nil
+     (lambda ()
+       (when (file-exists-p my/sc-use-tidal-flag)
+         (delete-file my/sc-use-tidal-flag))))
+    (run-at-time "6 sec" nil #'tidal-start-haskell))
+
+  (after! tidal
+    (map! :map tidal-mode-map
+          :n "C-<return>" #'tidal-run-multiple-lines
+          (:localleader
+           :desc "Start Tidal environment" "s" #'my/start-tidal-environment))))
 
 
 ;;; Music player (empv)
@@ -203,8 +214,9 @@
                           albums))
            (choice (completing-read "Play album: " table nil t)))
       (empv-subsonic-play (cdr (assoc choice table)))))
-  (add-to-list 'empv-mpv-args
-               "--ytdl-raw-options=cookies-from-browser=firefox:/Users/jillced/Library/Application Support/librewolf/Profiles/me7og5ja.default-default")
+  (when (featurep :system 'macos)
+    (add-to-list 'empv-mpv-args
+                 "--ytdl-raw-options=cookies-from-browser=firefox:/Users/jillced/Library/Application Support/librewolf/Profiles/me7og5ja.default-default"))
   (map! :leader
         :desc "Music (empv)" "e" empv-map)
 
