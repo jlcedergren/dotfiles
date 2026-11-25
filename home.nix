@@ -13,7 +13,6 @@ in
   home.packages = with pkgs; [
     fd
     ripgrep
-    gh
     htop
     nil
     nixfmt
@@ -69,6 +68,11 @@ in
       user.name = "jlcedergren";
       user.email = "jill@jillcedergren.com";
     };
+  };
+
+  programs.gh = {
+    enable = true;
+    gitCredentialHelper.enable = true;
   };
 
   # Starship config
