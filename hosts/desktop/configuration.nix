@@ -40,6 +40,32 @@
   services.openssh.enable = true;
   zramSwap.enable = true;
 
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+    extraPackages = [ pkgs.nvidia-vaapi-driver ];
+  };
+  services.xserver.videoDrivers = [ "nvidia" ];
+  hardware.nvidia = {
+    open = true;
+    modesetting.enable = true;
+    nvidiaSettings = true;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
+  };
+
+  programs.sway = {
+    enable = true;
+    wrapperFeatures.gtk = true;
+    extraOptions = [ "--unsupported-gpu" ];
+    extraSessionCommands = ''
+      export GBM_BACKEND=nvidia-drm
+      export __GLX_VENDOR_LIBRARY_NAME=nvidia
+      export LIBVA_DRIVER_NAME=nvidia
+    '';
+  };
+
+  services.openssh.settings.PasswordAuthentication = false;
+
   environment.systemPackages = with pkgs; [ vim git kitty.terminfo ];
 
   nixpkgs.config.allowUnfree = true;
