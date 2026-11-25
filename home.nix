@@ -224,10 +224,10 @@ in
     let
       profiles = if isDarwin
         then "$HOME/Library/Application Support/librewolf/Profiles"
-        else "$HOME/.librewolf";
+        else "$HOME/.config/librewolf/librewolf";
     in
     lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      for profile in "${profiles}"/*.default-default; do
+      for profile in "${profiles}"/*.default*; do
         [ -d "$profile" ] || continue
         run mkdir -p "$profile/chrome"
         run install -m 644 ${./librewolf/chrome/userChrome.css} "$profile/chrome/userChrome.css"
