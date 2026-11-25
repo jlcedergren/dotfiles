@@ -220,13 +220,20 @@ in
     "waybar".source = link "waybar";
   };
 
-  home.activation.librewolfChrome = lib.mkIf isDarwin
-    (lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      dir="$HOME/Library/Application Support/librewolf/Profiles/me7og5ja.default-default/chrome"
-      run mkdir -p "$dir"
-      run install -m 644 ${./librewolf/chrome/userChrome.css} "$dir/userChrome.css"
-      run install -m 644 ${./librewolf/chrome/userContent.css} "$dir/userContent.css"
-    '');
+  home.activation.librewolfChrome =
+    let
+      profiles = if isDarwin
+        then "$HOME/Library/Application Support/librewolf/Profiles"
+        else "$HOME/.librewolf";
+    in
+    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      for profile in "${profiles}"/*.default-default; do
+        [ -d "$profile" ] || continue
+        run mkdir -p "$profile/chrome"
+        run install -m 644 ${./librewolf/chrome/userChrome.css} "$profile/chrome/userChrome.css"
+        run install -m 644 ${./librewolf/chrome/userContent.css} "$profile/chrome/userContent.css"
+      done
+    '';
 
   home.file = lib.mkIf isDarwin (
     let sc = "Library/Application Support/SuperCollider";
