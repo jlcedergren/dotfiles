@@ -70,6 +70,7 @@
     vim
     wget
     git
+    kitty.terminfo
   ];
 
   nixpkgs.config.allowUnfree = true;
