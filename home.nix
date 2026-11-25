@@ -217,6 +217,7 @@ in
     "karabiner".source = link "karabiner";
   } // lib.optionalAttrs pkgs.stdenv.isLinux {
     "sway".source = link "sway";
+    "waybar".source = link "waybar";
   };
 
   home.activation.librewolfChrome = lib.mkIf isDarwin

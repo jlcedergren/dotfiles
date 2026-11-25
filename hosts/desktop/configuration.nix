@@ -67,9 +67,24 @@
   services.openssh.settings.PasswordAuthentication = false;
 
   environment.systemPackages = with pkgs; [
-    vim git kitty.terminfo
+    vim git kitty.terminfo waybar
     kitty wofi swaybg wl-clipboard autotiling
   ];
+
+  fonts.packages = with pkgs; [
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.symbols-only
+    font-awesome
+  ];
+
+  services.pulseaudio.enable = false;
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+  };
 
   nixpkgs.config.allowUnfree = true;
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -78,6 +93,7 @@
     dates = "weekly";
     options = "--delete-older-than 30d";
   };
+
   nix.optimise.automatic = true;
 
   system.stateVersion = "26.05";

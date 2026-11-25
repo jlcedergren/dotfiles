@@ -63,5 +63,6 @@ bindsym $mod+Shift+e exec swaynag -t warning -m 'Exit sway?' -B 'Yes' 'swaymsg e
 
 exec autotiling
 exec emacs --daemon
+exec waybar
 
 include /etc/sway/config.d/*

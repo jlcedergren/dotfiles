@@ -1,0 +1,96 @@
+@define-color bg        #3e3b3e;  /* BAR_BG */
+@define-color fg        #d6c0cf;  /* FG */
+@define-color accent    #756b73;  /* ACCENT */
+@define-color accent_fg #171820;  /* ACCENT_FG */
+
+@define-color surface   #4a464a; 
+@define-color subtle    #a596a1; 
+@define-color urgent    #c98a9b; 
+
+
+.modules-left {
+    margin-left: 900px;
+}
+
+.modules-right {
+    margin-right: 900px;
+}
+
+* {
+    font-family: "JetBrainsMono Nerd Font", "Font Awesome 6 Free", "Symbols Nerd Font";
+    font-size: 13px;
+    min-height: 0;
+}
+
+window#waybar {
+    background: rgba(62, 59, 62, 0.95);      /* bg */
+    color: @fg;
+    border: 1px solid rgba(117, 107, 115, 0.45); /* accent */
+    border-radius: 0px;
+}
+
+#workspaces {
+    padding: 6px 8px;
+}
+
+#workspaces button {
+    color: @subtle;
+    background: transparent;
+    border: 0;
+    border-radius: 12px;
+    padding: 4px 10px;
+    margin: 0 3px;
+    transition: all 120ms ease;
+}
+
+#workspaces button:hover {
+    color: @fg;
+    background: @surface;
+}
+
+#workspaces button.focused {
+    color: @accent_fg;
+    background: @fg;
+}
+
+#workspaces button.urgent {
+    color: @accent_fg;
+    background: @urgent;
+}
+
+#window,
+#clock,
+#pulseaudio,
+#network,
+#cpu,
+#memory,
+#temperature,
+#tray {
+    background: rgba(74, 70, 74, 0.80);       /* surface */
+    color: @fg;
+    border: 1px solid rgba(117, 107, 115, 0.35); /* accent */
+    border-radius: 0px;
+    padding: 6px 10px;
+    margin: 6px 4px;
+}
+
+#clock {
+    color: @accent_fg;
+    background: @accent;
+    border-color: @accent;
+}
+
+#cpu,
+#memory {
+    color: @subtle;
+}
+
+#temperature.critical {
+    background: rgba(201, 138, 155, 0.30);   /* urgent */
+    border-color: rgba(201, 138, 155, 0.60);
+    color: @fg;
+}
+
+#tray {
+    padding-right: 12px;
+}
