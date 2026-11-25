@@ -29,7 +29,7 @@
       "chromaprint" "clang-format" "cmake" "curl" "duti" "faust"
       "felixkratz/formulae/sketchybar" "ghcup" "gnu-tar" "go" "gtop"
       "isync" "mpv" "mu" "nmap" "qt@5" "transmission-cli" "unar"
-      "unzip" "wget" "zsh"
+      "unzip" "wget" "zsh" "yt-dlp" "htop"
     ];
 
     casks = [

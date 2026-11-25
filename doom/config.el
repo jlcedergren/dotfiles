@@ -203,7 +203,8 @@
                           albums))
            (choice (completing-read "Play album: " table nil t)))
       (empv-subsonic-play (cdr (assoc choice table)))))
-
+  (add-to-list 'empv-mpv-args
+               "--ytdl-raw-options=cookies-from-browser=firefox:/Users/jillced/Library/Application Support/librewolf/Profiles/me7og5ja.default-default")
   (map! :leader
         :desc "Music (empv)" "e" empv-map)
 
