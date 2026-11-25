@@ -11,9 +11,9 @@
   (when (file-exists-p splash)
     (setq fancy-splash-image splash)))
 
-(set-frame-parameter (selected-frame) 'alpha-background '(90 . 90))
-(add-to-list 'default-frame-alist '(alpha-background . (90 . 90)))
-
+(if (featurep :system 'macos)
+    (add-to-list 'default-frame-alist '(alpha . (90 . 90)))
+  (add-to-list 'default-frame-alist '(alpha-background . 90)))
 
 ;;; General
 
