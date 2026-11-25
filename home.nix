@@ -145,6 +145,8 @@ in
       nup = if isDarwin
         then "cd ~/nix-config && nix flake update && sudo darwin-rebuild switch --flake . && home-manager switch --flake . && doom upgrade"
         else "cd ~/nix-config && nix flake update && sudo nixos-rebuild switch --flake . && doom upgrade";
+    } // lib.optionalAttrs (!isDarwin) {
+      nrs = "sudo nixos-rebuild switch --flake ~/nix-config";
     };
   };
 
