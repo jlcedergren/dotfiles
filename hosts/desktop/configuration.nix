@@ -66,7 +66,10 @@
 
   services.openssh.settings.PasswordAuthentication = false;
 
-  environment.systemPackages = with pkgs; [ vim git kitty.terminfo ];
+  environment.systemPackages = with pkgs; [
+    vim git kitty.terminfo
+    kitty wofi swaybg wl-clipboard autotiling
+  ];
 
   nixpkgs.config.allowUnfree = true;
   nix.settings.experimental-features = [ "nix-command" "flakes" ];

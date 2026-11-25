@@ -215,6 +215,8 @@ in
     "aerospace".source = link "aerospace";
     "sketchybar".source = link "sketchybar";
     "karabiner".source = link "karabiner";
+  } // lib.optionalAttrs pkgs.stdenv.isLinux {
+    "sway".source = link "sway";
   };
 
   home.activation.librewolfChrome = lib.mkIf isDarwin

@@ -1,0 +1,67 @@
+set $mod Mod4
+
+output DP-2 mode 3440x1440@143.970Hz position 0 0 scale 1
+output * bg /home/jillced/Pictures/wallpaper.png fill
+
+input type:keyboard {
+    xkb_file /home/jillced/.config/sway/keymap.xkb
+}
+
+default_border pixel 2
+default_floating_border pixel 2
+gaps inner 6
+gaps outer 0
+
+# With a single window: wide side gaps so it sits roughly in the middle
+smart_gaps inverse_outer
+gaps horizontal 600
+
+# class                 border  bg      text    indicator child_border
+client.focused          #89b4fa #89b4fa #11111b #cba6f7   #89b4fa
+client.focused_inactive #313244 #313244 #cdd6f4 #313244   #313244
+client.unfocused        #313244 #313244 #cdd6f4 #313244   #313244
+
+floating_modifier $mod normal
+
+bindsym $mod+c exec kitty
+bindsym $mod+Return exec emacsclient -c -a emacs
+bindsym $mod+space exec wofi --show drun
+
+bindsym $mod+q kill
+bindsym $mod+f fullscreen toggle
+bindsym $mod+t floating toggle
+bindsym $mod+v layout toggle split
+
+bindsym $mod+h focus left
+bindsym $mod+l focus right
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+l move right
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+
+bindsym $mod+Ctrl+h resize shrink width 50px
+bindsym $mod+Ctrl+l resize grow width 50px
+bindsym $mod+Ctrl+j resize grow height 50px
+bindsym $mod+Ctrl+k resize shrink height 50px
+
+bindsym $mod+1 workspace number 1
+bindsym $mod+2 workspace number 2
+bindsym $mod+3 workspace number 3
+bindsym $mod+4 workspace number 4
+bindsym $mod+5 workspace number 5
+bindsym $mod+Shift+1 move container to workspace number 1
+bindsym $mod+Shift+2 move container to workspace number 2
+bindsym $mod+Shift+3 move container to workspace number 3
+bindsym $mod+Shift+4 move container to workspace number 4
+bindsym $mod+Shift+5 move container to workspace number 5
+
+bindsym $mod+Shift+c reload
+bindsym $mod+Shift+e exec swaynag -t warning -m 'Exit sway?' -B 'Yes' 'swaymsg exit'
+
+exec autotiling
+exec emacs --daemon
+
+include /etc/sway/config.d/*
