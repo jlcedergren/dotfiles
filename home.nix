@@ -16,6 +16,18 @@ in
     htop
     nil
     nixfmt
+    zstd
+    chromaprint
+    clang-tools
+    cmake
+    duti
+    go
+    isync
+    gtop
+    nmap
+    wget
+    unar
+
   ];
 
   programs.home-manager.enable = true;
@@ -122,11 +134,9 @@ in
 
       eval "$(/opt/homebrew/bin/brew shellenv)"
     '';
-
-  };
-
-  programs.zsh.shellAliases = {
-    nup = "cd ~/nix-config && nix flake update && sudo darwin-rebuild switch --flake . && home-manager switch --flake . && doom upgrade";
+    shellAliases = {
+      nup = "cd ~/nix-config && nix flake update && sudo darwin-rebuild switch --flake . && home-manager switch --flake . && doom upgrade";
+    };
   };
 
   programs.fastfetch = {

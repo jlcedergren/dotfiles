@@ -19,6 +19,12 @@
   homebrew = {
     enable = true;
 
+    onActivation = {
+      autoUpdate = true;
+      upgrade = true;
+      cleanup = "uninstall";
+    };
+
     taps = [
       "felixkratz/formulae"
       "nikitabobko/tap"
@@ -26,10 +32,9 @@
     ];
 
     brews = [
-      "chromaprint" "clang-format" "cmake" "curl" "duti" "faust"
-      "felixkratz/formulae/sketchybar" "ghcup" "gnu-tar" "go" "gtop"
-      "isync" "mpv" "mu" "nmap" "qt@5" "transmission-cli" "unar"
-      "unzip" "wget" "zsh" "yt-dlp" "htop"
+      "curl" "faust" "yt-dlp"
+      "felixkratz/formulae/sketchybar" "ghcup" "gnu-tar"
+      "mu" "qt@5" "transmission-cli" "unzip" "mpv"
     ];
 
     casks = [
@@ -48,10 +53,4 @@
 
   nix.optimise.automatic = true;
 
-  homebrew.onActivation.cleanup = "uninstall";
-
-  homebrew.onActivation = {
-    autoUpdate = true;
-    upgrade = true;
-  };
 }
