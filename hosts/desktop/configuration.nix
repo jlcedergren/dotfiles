@@ -94,6 +94,14 @@
     options = "--delete-older-than 30d";
   };
 
+  services.greetd = {
+    enable = true;
+    settings.default_session = {
+      command = "${pkgs.tuigreet}/bin/tuigreet --time --remember --cmd sway";
+      user = "greeter";
+    };
+  };
+
   nix.optimise.automatic = true;
 
   system.stateVersion = "26.05";
