@@ -74,7 +74,7 @@
 
   environment.systemPackages = with pkgs; [
     vim git kitty.terminfo waybar xdg-utils librewolf
-    kitty wofi swaybg wl-clipboard autotiling
+    kitty wofi swaybg wl-clipboard autotiling pavucontrol
   ];
 
   fonts.packages = with pkgs; [
@@ -107,6 +107,9 @@
       user = "greeter";
     };
   };
+
+  programs.dconf.enable = true;
+  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
 
   nix.optimise.automatic = true;
 

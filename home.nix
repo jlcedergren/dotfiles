@@ -243,4 +243,16 @@ in
       "${sc}/startup.tidal.scd".source = link "supercollider/startup.tidal.scd";
     }
   );
+
+  dconf.settings = lib.mkIf (!isDarwin) {
+    "org/gnome/desktop/interface".color-scheme = "prefer-dark";
+  };
+
+  gtk = lib.mkIf (!isDarwin) {
+    enable = true;
+    theme = {
+      name = "Adwaita-dark";
+      package = pkgs.gnome-themes-extra;
+    };
+  };
 }

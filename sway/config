@@ -65,4 +65,6 @@ exec autotiling
 exec emacs --daemon
 exec waybar
 
+for_window [app_id="pavucontrol"] floating enable
+
 include /etc/sway/config.d/*
