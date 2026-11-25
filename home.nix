@@ -214,8 +214,8 @@ in
   } // lib.optionalAttrs isDarwin {
     "aerospace".source = link "aerospace";
     "sketchybar".source = link "sketchybar";
-    "karabiner".source = link "karabiner";
-  } // lib.optionalAttrs pkgs.stdenv.isLinux {
+    "karabiner".source = link "karabiner";  }
+    // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
     "sway".source = link "sway";
     "waybar".source = link "waybar";
   };
