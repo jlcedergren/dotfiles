@@ -32,9 +32,30 @@ in
   ] ++ lib.optionals (!isDarwin) [
     ((emacsPackagesFor emacs-pgtk).emacsWithPackages (epkgs: [ epkgs.vterm ]))
     nerd-fonts.symbols-only
-  ];
 
-  fonts.fontconfig.enable = !isDarwin;
+    dotnet-sdk_10
+    csharp-ls
+
+    nodejs
+    typescript-language-server
+
+    python3
+    pyright
+
+    rustc
+    cargo
+    rust-analyzer
+    rustfmt
+    clippy
+
+    gcc
+    gnumake
+    gdb
+
+    vscode-langservers-extracted
+
+    shellcheck
+  ];  fonts.fontconfig.enable = !isDarwin;
 
   programs.home-manager.enable = true;
 
