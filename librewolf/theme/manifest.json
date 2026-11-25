@@ -1,0 +1,22 @@
+{
+  "browser_specific_settings": { "gecko": { "id": "theme@jillced" } },
+  "manifest_version": 2,
+  "version": "1.0",
+  "name": "jill-ced theme",
+  "theme": {
+    "images": {},
+    "properties": {},
+    "colors": {
+      "toolbar": "rgb(62, 59, 62)",
+      "toolbar_text": "rgb(201, 138, 155)",
+      "frame": "rgb(62, 59, 62)",
+      "tab_background_text": "rgb(107, 89, 93)",
+      "toolbar_field": "rgb(62, 59, 62)",
+      "toolbar_field_text": "rgb(201, 138, 155)",
+      "tab_line": "rgb(201, 138, 155)",
+      "popup": "rgb(62, 59, 62)",
+      "popup_text": "rgb(201, 138, 155)",
+      "tab_loading": "rgb(201, 138, 155)"
+    }
+  }
+}
