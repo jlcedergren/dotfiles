@@ -1,22 +1,17 @@
-# NixOS in UTM on the M1 Mac.
-# Based on what the installer generated; the hardware-specific
-# parts live in hardware-configuration.nix next to this file.
+# NixOS in UTM
 
 { pkgs, ... }:
 
 {
   imports = [ ./hardware-configuration.nix ];
 
-  # Boot
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  # Network
   networking.hostName = "nixos-vm";
   networking.networkmanager.enable = true;
 
-  # Locale and keyboard
   time.timeZone = "Europe/Stockholm";
   i18n.defaultLocale = "en_US.UTF-8";
   i18n.extraLocaleSettings = {
@@ -41,7 +36,6 @@
   services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
 
-  # Sound
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
@@ -59,7 +53,6 @@
 
   services.openssh.enable = true;
 
-  # User
   users.users.jillced = {
     isNormalUser = true;
     description = "jillced";
@@ -68,8 +61,6 @@
     packages = with pkgs; [ kdePackages.kate ];
   };
 
-  # zsh has to be enabled system-wide to be a login shell;
-  # the actual config comes from home.nix
   programs.zsh.enable = true;
   environment.pathsToLink = [ "/share/zsh" ];
 
@@ -91,6 +82,5 @@
   };
   nix.optimise.automatic = true;
 
-  # Never change this after the install (same rule as on the Mac)
   system.stateVersion = "26.05";
 }

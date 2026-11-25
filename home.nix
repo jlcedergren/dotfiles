@@ -30,7 +30,7 @@ in
   ] ++ lib.optionals isDarwin [
     duti
   ] ++ lib.optionals (!isDarwin) [
-    emacs-pgtk # on the Mac, Emacs comes from the emacs-app cask
+    emacs-pgtk
   ];
 
   programs.home-manager.enable = true;

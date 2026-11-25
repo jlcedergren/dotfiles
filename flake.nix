@@ -15,7 +15,6 @@
 
   outputs = { nixpkgs, home-manager, nix-darwin, ... }: {
 
-    # Main Mac: nix-darwin for the system, standalone home-manager for the user
     darwinConfigurations."Jills-MacBook-Air" = nix-darwin.lib.darwinSystem {
       modules = [ ./darwin.nix ];
     };
@@ -26,7 +25,6 @@
         modules = [ ./home.nix ];
       };
 
-    # NixOS machines: home-manager is built into the system rebuild
     nixosConfigurations."nixos-vm" = nixpkgs.lib.nixosSystem {
       modules = [
         ./hosts/nixos-vm/configuration.nix
