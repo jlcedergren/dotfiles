@@ -30,8 +30,11 @@ in
   ] ++ lib.optionals isDarwin [
     duti
   ] ++ lib.optionals (!isDarwin) [
-    emacs-pgtk
+    ((emacsPackagesFor emacs-pgtk).emacsWithPackages (epkgs: [ epkgs.vterm ]))
+    nerd-fonts.symbols-only
   ];
+
+  fonts.fontconfig.enable = !isDarwin;
 
   programs.home-manager.enable = true;
 
