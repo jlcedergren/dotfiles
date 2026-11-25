@@ -73,7 +73,7 @@
   services.openssh.settings.PasswordAuthentication = false;
 
   environment.systemPackages = with pkgs; [
-    vim git kitty.terminfo waybar
+    vim git kitty.terminfo waybar xdg-utils librewolf
     kitty wofi swaybg wl-clipboard autotiling
   ];
 
