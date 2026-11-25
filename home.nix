@@ -1,12 +1,13 @@
 { config, pkgs, lib, ... }:
 
 let
+  isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
   link = name: config.lib.file.mkOutOfStoreSymlink
     "${config.home.homeDirectory}/nix-config/${name}";
 in
 {
   home.username = "jillced";
-  home.homeDirectory = "/Users/jillced";
+  home.homeDirectory = if isDarwin then "/Users/jillced" else "/home/jillced";
   home.stateVersion = "26.05";
 
   home.packages = with pkgs; [
@@ -20,14 +21,16 @@ in
     chromaprint
     clang-tools
     cmake
-    duti
     go
     isync
     gtop
     nmap
     wget
     unar
-
+  ] ++ lib.optionals isDarwin [
+    duti
+  ] ++ lib.optionals (!isDarwin) [
+    emacs-pgtk # on the Mac, Emacs comes from the emacs-app cask
   ];
 
   programs.home-manager.enable = true;
@@ -120,7 +123,7 @@ in
         touch .projectile
         git init
       }
-    '' + lib.optionalString pkgs.stdenv.hostPlatform.isDarwin ''
+    '' + lib.optionalString isDarwin ''
       path=(/Applications/SuperCollider.app/Contents/MacOS(N/) $path)
       export MAXSDK="$HOME/max-sdk-base/c74support"
       export DOTNET_ROOT="/usr/local/share/dotnet"
@@ -128,14 +131,17 @@ in
       [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
     '';
 
-    profileExtra = ''
+    profileExtra = lib.optionalString isDarwin ''
       PATH="/Library/Frameworks/Python.framework/Versions/3.13/bin:$PATH"
       export PATH
 
       eval "$(/opt/homebrew/bin/brew shellenv)"
     '';
+
     shellAliases = {
-      nup = "cd ~/nix-config && nix flake update && sudo darwin-rebuild switch --flake . && home-manager switch --flake . && doom upgrade";
+      nup = if isDarwin
+        then "cd ~/nix-config && nix flake update && sudo darwin-rebuild switch --flake . && home-manager switch --flake . && doom upgrade"
+        else "cd ~/nix-config && nix flake update && sudo nixos-rebuild switch --flake . && doom upgrade";
     };
   };
 
@@ -145,7 +151,6 @@ in
       "$schema" = "https://github.com/fastfetch-cli/fastfetch/raw/master/doc/json_schema.json";
       logo = {
         type = "auto";
-        source = "macos";
         width = 65;
         height = 35;
         padding = {
@@ -161,6 +166,8 @@ in
           "5" = "#F5A9B8";
           "6" = "#5BCEFA";
         };
+      } // lib.optionalAttrs isDarwin {
+        source = "macos";
       };
       modules = [
         "title" "separator" "os" "host" "kernel" "uptime" "packages"
@@ -174,12 +181,13 @@ in
   xdg.configFile = {
     "doom".source = link "doom";
     "kitty".source = link "kitty";
+  } // lib.optionalAttrs isDarwin {
     "aerospace".source = link "aerospace";
     "sketchybar".source = link "sketchybar";
     "karabiner".source = link "karabiner";
   };
 
-  home.activation.librewolfChrome = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin
+  home.activation.librewolfChrome = lib.mkIf isDarwin
     (lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       dir="$HOME/Library/Application Support/librewolf/Profiles/me7og5ja.default-default/chrome"
       run mkdir -p "$dir"
@@ -187,7 +195,7 @@ in
       run install -m 644 ${./librewolf/chrome/userContent.css} "$dir/userContent.css"
     '');
 
-  home.file = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin (
+  home.file = lib.mkIf isDarwin (
     let sc = "Library/Application Support/SuperCollider";
     in {
       "${sc}/startup.scd".source = link "supercollider/startup.scd";
