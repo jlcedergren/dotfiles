@@ -1,0 +1,11 @@
+width=600
+height=400
+location=center
+show=drun
+prompt=search
+allow_images=true
+image_size=24
+insensitive=true
+matching=fuzzy
+no_actions=true
+hide_scroll=true

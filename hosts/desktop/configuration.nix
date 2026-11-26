@@ -64,6 +64,17 @@
     '';
   };
 
+  xdg.portal.wlr = {
+    enable = true;
+    settings.screencast = {
+      output_name = "DP-2";
+      chooser_type = "none";
+      max_fps = 60;
+    };
+  };
+
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
+
   programs.steam = {
     enable = true;
     extraCompatPackages = [ pkgs.proton-ge-bin ];
@@ -76,6 +87,7 @@
   environment.systemPackages = with pkgs; [
     vim git kitty.terminfo waybar xdg-utils librewolf
     kitty wofi swaybg wl-clipboard autotiling pavucontrol
+    vesktop prismlauncher proton-pass
 
     (heroic.override {
       extraPkgs = pkgs': [ pkgs'.gamemode ];

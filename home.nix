@@ -217,6 +217,7 @@ in
     // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
     "sway".source = link "sway";
     "waybar".source = link "waybar";
+    "wofi".source = link "wofi";
   };
 
   home.activation.librewolfChrome =
