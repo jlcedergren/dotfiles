@@ -139,7 +139,6 @@ in
         bindkey -M vicmd 'y' vi-yank-clipboard
       fi
 
-
       path+=(~/.dotnet/tools(N/))
 
       csnew() {
