@@ -13,41 +13,31 @@
     };
   };
 
-  outputs = { nixpkgs, home-manager, nix-darwin, ... }: {
-
-    darwinConfigurations."Jills-MacBook-Air" = nix-darwin.lib.darwinSystem {
-      modules = [ ./darwin.nix ];
-    };
-
-    homeConfigurations."jillced" =
-      home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.aarch64-darwin;
-        modules = [ ./home.nix ];
+  outputs = { nixpkgs, home-manager, nix-darwin, ... }:
+    let
+      mkNixos = host: nixpkgs.lib.nixosSystem {
+        modules = [
+          ./hosts/${host}/configuration.nix
+          home-manager.nixosModules.home-manager
+        ];
+      };
+    in
+    {
+      nixosConfigurations = {
+        desktop = mkNixos "desktop";
+        nixos-vm = mkNixos "nixos-vm";
       };
 
-    nixosConfigurations."nixos-vm" = nixpkgs.lib.nixosSystem {
-      modules = [
-        ./hosts/nixos-vm/configuration.nix
-        home-manager.nixosModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.backupFileExtension = "backup";
-          home-manager.users.jillced = import ./home.nix;
-        }
-      ];
+      darwinConfigurations."Jills-MacBook-Air" = nix-darwin.lib.darwinSystem {
+        modules = [ ./hosts/macbook-air/configuration.nix ];
+      };
+
+      homeConfigurations."jillced" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.aarch64-darwin;
+        modules = [
+          ./home
+          ./home/darwin.nix
+        ];
+      };
     };
-    nixosConfigurations."desktop" = nixpkgs.lib.nixosSystem {
-      modules = [
-        ./hosts/desktop/configuration.nix
-        home-manager.nixosModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.backupFileExtension = "backup";
-          home-manager.users.jillced = import ./home.nix;
-        }
-      ];
-    };
-  };
 }

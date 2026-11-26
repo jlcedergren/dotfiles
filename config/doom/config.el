@@ -80,7 +80,7 @@
   (add-hook 'c++-mode-hook #'lsp!))
 
 
-;; Main machine only: email, SuperCollider and Tidal
+;; Main macbook only
 (when my/main-machine-p
 
   ;;; Email

@@ -1,21 +1,4 @@
-{ pkgs, ... }:
-
 {
-  nixpkgs.hostPlatform = "aarch64-darwin";
-  system.stateVersion = 6;
-  system.primaryUser = "jillced";
-
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
-  fonts.packages = with pkgs.nerd-fonts; [
-    iosevka
-    jetbrains-mono
-    fira-code
-    hack
-    victor-mono
-    symbols-only
-  ];
-
   homebrew = {
     enable = true;
 
@@ -45,12 +28,4 @@
       "ungoogled-chromium" "utm" "vlc" "kitty" "karabiner-elements"
     ];
   };
-
-  nix.gc = {
-    automatic = true;
-    options = "--delete-older-than 30d";
-  };
-
-  nix.optimise.automatic = true;
-
 }
