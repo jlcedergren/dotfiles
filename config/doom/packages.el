@@ -1,9 +1,4 @@
-(package! dired-subtree)
-(package! dired-narrow)
+;; -*- no-byte-compile: t; -*-
+;;; $DOOMDIR/packages.el
 
-(package! empv)
-
-(when (featurep :system 'macos)
-  (package! haskell-mode)
-  (package! scel
-    :recipe (:host github :repo "supercollider/scel")))
+;; Packages used by config.el go here. Packages that belong to modules go in packages.el in the modules folder

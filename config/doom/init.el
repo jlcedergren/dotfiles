@@ -57,7 +57,7 @@
        (evil +everywhere); come to the dark side, we have cookies
        file-templates    ; auto-snippets for empty files
        fold              ; (nigh) universal code folding
-       ;;(format +onsave)  ; automated prettiness
+       (format +onsave)  ; automated prettiness
        ;;god               ; run Emacs commands without modifier keys
        ;;lispy             ; vim for lisp, for people who don't like vim
        ;;multiple-cursors  ; editing in many places at once
@@ -196,4 +196,16 @@
 
        :config
        ;;literate
-       (default +bindings +smartparens))
+       (default +bindings +smartparens)
+
+       :my
+       dired             ; dired-subtree + dired-narrow
+       dev               ; eglot tweaks, .NET on macOS
+       empv              ; Navidrome/Subsonic player
+       (:if (featurep :system 'macos)
+           (notes +timeedit)
+         notes)          ; org settings; +timeedit = TimeEdit calendar sync
+       (:when (featurep :system 'macos)
+         mail            ; mu4e
+         supercollider   ; scel
+         tidal))         ; TidalCycles (needs supercollider)
